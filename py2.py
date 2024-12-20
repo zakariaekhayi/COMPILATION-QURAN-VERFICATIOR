@@ -10,7 +10,7 @@ app = Flask(__name__)
 versets_corrects = [
     "بسم الله الرحمن الرحيم", 
     "الحمد لله رب العالمين", 
-    "الرحمن الرحيم ملك يوم الدين",
+    "الرحمن الرحيم"," ملك يوم الدين",
     "إياك نعبد وإياك نستعين",
     "اهدنا الصراط المستقيم",
     "صراط الذين أنعمت عليهم غير",  
@@ -86,9 +86,14 @@ lexer = lex.lex()
 # Règles syntaxiques pour la sourate Al-Fatiha
 # Règles syntaxiques pour la sourate Al-Fatiha (sans retour à la ligne)
 # Règles syntaxiques pour une phrase (p_phrase)
-def p_phrase(p):
+def p_phrase(p):###meme l'action semantique est verifie ici car il nous dit que les mots qui reste grace a la fonction verifier les mots manquantes 
     '''phrase : BISM ALLAH ALRAHMAN ALRAHEEM ALHAMDU LILLAH RABB ALALAMEEN ALRAHMAN ALRAHEEM MALIKI YAUM ALDEEN IYYAKA NABUDU WA IYYAKA NAASTA3EEN IHDINA ALSIRAT ALMOSTAQEEM SIRAT ALLATHEEN AN3AMTA ALAYHIM GHAYR ALMAGHDOUBI ALAYHIM WALA ALDAALEEN'''
     p[0] = "✅ النص صحيح: السورة مكتوبة بشكل صحيح!"  # Message de confirmation
+
+def p_aya1(p):
+    '''aya1 : BISM ALLAH ALRAHMAN ALRAHEEM '''
+    p[0] = "✅ الآية صحيحة"
+
 
 # Gestion des erreurs syntaxiques
 def p_error(p):
@@ -97,10 +102,10 @@ def p_error(p):
     raise Exception("⛔ العبارة غير مكتملة أو تحتوي على خطأ!")
 
 # Construire le parser
-parser = yacc.yacc()
+parser = yacc.yacc()##parser.parse()
 
 # Liste des mots corrects dans la sourate Al-Fatiha
-mots_corrects = [
+mots_corrects = [##Action sematique verification  
     "بسم", "الله", "الرحمن", "الرحيم", "الحمد", "لله", "رب", "العالمين",
     "الرحمن", "الرحيم", "مالك", "يوم", "الدين", "إياك", "نعبد", "وإياك", "نستعين",
     "اهدنا", "الصراط", "المستقيم", "صراط", "الذين", "أنعمت", "عليهم", "غير",
@@ -141,6 +146,15 @@ def verifier_ordre(mots_entree):
     if sourate_reduite != texte_reduit:
         return "⛔ الكلمات ليست بالترتيب الصحيح أو هناك أخطاء في العبارة."
     return None
+
+def verifier_mot_par_mot(text):
+    for i in range(len(text.split())):  # Utilisation de range() et len()
+        mot = text.split()[i]
+        if mot not in mots_corrects:
+            return False
+    return True  # Correction de l'indentation du return
+
+    
 
 # عرض الكلمات الصحيحة المتبقية
 def mots_restants(mots_entree):
@@ -225,8 +239,8 @@ def index():
   
         if texte in versets_corrects:  # Vérifier si le texte est un verset correct
             result = "✅ الآية صحيحة"
-        elif texte in mots_corrects:  # Vérifier si le texte est un mot correct
-            result = "✅ الكلمة صحيحة وتنتمي إلى كلمات السورة ولكن :::::::::> " +'<br>' + analyser_chaine(texte)
+        elif verifier_mot_par_mot(texte):  # Vérifier si le texte est un mot correct
+            result = "✅ الكلمة او الكلمات صحيحة وتنتمي إلى كلمات السورة ولكن :::::::::> " +'<br>' + analyser_chaine(texte)
         elif est_arabe(texte):
             result = analyser_chaine(texte)
         else:
