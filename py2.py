@@ -6,15 +6,15 @@ from difflib import get_close_matches
 
 app = Flask(__name__)
 
-# Liste des versets corrects
+
 versets_corrects = [
     "بسم الله الرحمن الرحيم", 
     "الحمد لله رب العالمين", 
     "الرحمن الرحيم"," ملك يوم الدين",
     "إياك نعبد وإياك نستعين",
     "اهدنا الصراط المستقيم",
-    "صراط الذين أنعمت عليهم غير",  
-    "المغضوب عليهم ولا الضالين"  
+    "صراط الذين أنعمت عليهم ",  
+    "غير المغضوب عليهم ولا الضالين"  
 ]
 
 
@@ -94,6 +94,44 @@ def p_aya1(p):
     '''aya1 : BISM ALLAH ALRAHMAN ALRAHEEM '''
     p[0] = "✅ الآية صحيحة"
 
+def p_aya2(p):
+    '''aya2 : ALHAMDU LILLAH RABB ALALAMEEN '''
+    p[0] = "✅ الآية صحيحة"
+
+def p_aya3(p):
+    '''aya3 : ALRAHMAN ALRAHEEM'''
+    p[0] = "✅ الآية صحيحة"
+
+def p_aya4(p):
+    '''aya4 : MALIKI YAUM ALDEEN'''
+    p[0] = "✅ الآية صحيحة"
+
+def p_aya5(p):
+    '''aya5 : IYYAKA NABUDU WA IYYAKA NAASTA3EEN'''
+    p[0] = "✅ الآية صحيحة"
+
+def p_aya6(p):
+    '''aya6 : IHDINA ALSIRAT ALMOSTAQEEM'''
+    p[0] = "✅ الآية صحيحة"
+
+def p_aya7(p):
+    '''aya7 : SIRAT ALLATHEEN AN3AMTA ALAYHIM'''
+    p[0] = "✅ الآية صحيحة"
+
+def p_aya8(p):
+    '''aya8 : GHAYR ALMAGHDOUBI ALAYHIM WALA ALDAALEEN'''
+    p[0] = "✅ الآية صحيحة"
+
+def p_start(p):
+    '''start : aya1
+             | aya2
+             | aya3
+             | aya4
+             | aya5
+             | aya6
+             | aya7
+             | aya8'''
+    p[0] = p[1]
 
 # Gestion des erreurs syntaxiques
 def p_error(p):
@@ -147,15 +185,6 @@ def verifier_ordre(mots_entree):
         return "⛔ الكلمات ليست بالترتيب الصحيح أو هناك أخطاء في العبارة."
     return None
 
-def verifier_mot_par_mot(text):
-    for i in range(len(text.split())):  # Utilisation de range() et len()
-        mot = text.split()[i]
-        if mot not in mots_corrects:
-            return False
-    return True  # Correction de l'indentation du return
-
-    
-
 # عرض الكلمات الصحيحة المتبقية
 def mots_restants(mots_entree):
     index_correct = len(mots_entree)
@@ -165,8 +194,16 @@ def est_arabe(texte):
     #  Hna kt verifie ana koula 7aref f text rah kintami majmou3at 7rouf logha l3aribiya code ascci
     return all('\u0600' <= char <= '\u06FF' or char.isspace() for char in texte)
 
+def verifier_mot_par_mot(text):
+    for i in range(len(text.split())):  # Utilisation de range() et len()
+        mot = text.split()[i]
+        if mot not in mots_corrects:
+            return False
+    return True  # Correction de l'indentation du return
+
+
 def analyse_lexical(texte):
-    try:
+    try:#########################*********lex**********###############################
         # Analyse lexicale du texte
         lexer.input(texte)
         while True:
@@ -214,9 +251,9 @@ def analyser_chaine(texte):#### ici ou on commence l'explication  cette anlyse e
         return "\n".join(erreurs)
 
     # التحقق إذا كانت جميع الكلمات بالترتيب الصحيح
-    try:
+    try:#########################**************yacc**********#####################
         
-        result = parser.parse(texte)## il va allez directement ver p_phrase 
+        result = parser.parse(texte)## il va allez directement ver p_phrase et p_aya1..
         if result:
             return result
     except Exception as e:
@@ -239,13 +276,13 @@ def index():
   
         if texte in versets_corrects:  # Vérifier si le texte est un verset correct
             result = "✅ الآية صحيحة"
-        elif verifier_mot_par_mot(texte):  # Vérifier si le texte est un mot correct
-            result = "✅ الكلمة او الكلمات صحيحة وتنتمي إلى كلمات السورة ولكن :::::::::> " +'<br>' + analyser_chaine(texte)
+        elif verifier_mot_par_mot(texte):  # Utilisation correcte de 'texte' au lieu de 'text'
+            result = "✅ الكلمة او الكلمات صحيحة وتنتمي إلى كلمات السورة ولكن :::::::::> " + '<br>' + analyser_chaine(texte)
         elif est_arabe(texte):
-            result = analyser_chaine(texte)
+            result = analyser_chaine(texte)##fait appelle au yacc
         else:
             # Si le texte n'est ni un verset ni un mot correct, analyser davantage
-            result = analyse_lexical(texte) 
+            result = analyse_lexical(texte) ### sinon fait apelle au lex 
    
         
          
