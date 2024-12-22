@@ -122,16 +122,7 @@ def p_aya8(p):
     '''aya8 : GHAYR ALMAGHDOUBI ALAYHIM WALA ALDAALEEN'''
     p[0] = "✅ الآية صحيحة"
 
-def p_start(p):
-    '''start : aya1
-             | aya2
-             | aya3
-             | aya4
-             | aya5
-             | aya6
-             | aya7
-             | aya8'''
-    p[0] = p[1]
+
 
 # Gestion des erreurs syntaxiques
 def p_error(p):
