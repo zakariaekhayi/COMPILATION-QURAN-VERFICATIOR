@@ -74,6 +74,19 @@ Voici un fichier complet `README.md` adapté à votre projet :
   Étendre le système pour inclure d'autres sourates du Saint Coran.  
 
 
+![image](https://github.com/user-attachments/assets/9a484eaa-2b8e-4406-a2be-067461987ea6)
+![image](https://github.com/user-attachments/assets/074cc495-3db0-48f5-ba49-250d4195d44d)
+![image](https://github.com/user-attachments/assets/5de2eda1-fd52-423b-97a2-fc73de771425)
+![image](https://github.com/user-attachments/assets/e20039bf-6243-4bcf-93d6-3607d771bdfe)
+![image](https://github.com/user-attachments/assets/8adf1119-af3c-4b13-885c-22f7a9adee25)
+![image](https://github.com/user-attachments/assets/329f68e3-f99c-45d0-8587-189fbb8ee5fa)
+
+
+
+
+
+
+
 
  
 
